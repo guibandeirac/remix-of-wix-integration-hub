@@ -33,6 +33,12 @@ function getVisitorClient() {
   return visitorClient;
 }
 
+// The blog degrades gracefully when Wix is not configured yet: the site stays
+// browsable (empty article list / 404 per article) instead of crashing.
+function isWixConfigured() {
+  return Boolean(process.env["WIX_CLIENT_ID"]);
+}
+
 // Admin client (writes to the CRM). Needs an API key with "Manage Contacts" permission.
 function getAdminClient() {
   return createClient({
@@ -91,20 +97,33 @@ function toSummary(post: WixPost): ArticleSummary {
 
 export const listArticles = createServerFn({ method: "GET" }).handler(
   async (): Promise<ArticleSummary[]> => {
-    const { posts: items } = await getVisitorClient().posts.listPosts({
-      paging: { limit: 100 },
-      sort: "PUBLISHED_DATE_DESC",
-    });
-    return (items ?? []).map(toSummary);
+    if (!isWixConfigured()) return [];
+    try {
+      const { posts: items } = await getVisitorClient().posts.listPosts({
+        paging: { limit: 100 },
+        sort: "PUBLISHED_DATE_DESC",
+      });
+      return (items ?? []).map(toSummary);
+    } catch {
+      return [];
+    }
   },
 );
 
 export const getArticle = createServerFn({ method: "GET" })
   .inputValidator((slug: string) => z.string().min(1).parse(slug))
   .handler(async ({ data: slug }): Promise<Article> => {
-    const { post } = await getVisitorClient()
-      .posts.getPostBySlug(slug, { fieldsets: ["RICH_CONTENT"] })
-      .catch(() => ({ post: undefined }));
+    if (!isWixConfigured()) throw notFound();
+
+    let post: WixPost | undefined;
+    try {
+      const result = await getVisitorClient().posts.getPostBySlug(slug, {
+        fieldsets: ["RICH_CONTENT"],
+      });
+      post = result.post;
+    } catch {
+      throw notFound();
+    }
     if (!post) throw notFound();
 
     return {
