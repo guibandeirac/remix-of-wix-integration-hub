@@ -65,7 +65,11 @@ export type Article = ArticleSummary & {
   content: RichNode[];
 };
 
-type WixPost = NonNullable<(typeof posts)["GetPostBySlugResponse"]>["post"];
+async function fetchPostBySlug(slug: string) {
+  return getVisitorClient().posts.getPostBySlug(slug);
+}
+
+type WixPost = NonNullable<Awaited<ReturnType<typeof fetchPostBySlug>>["post"]>;
 
 function coverUrl(post: WixPost, width: number, height: number) {
   const image = post.media?.wixMedia?.image;
