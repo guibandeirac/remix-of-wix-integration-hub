@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
+import { submitLead } from "@/lib/wix";
+
 export const Route = createFileRoute("/contato")({
   head: () => ({
     meta: [
@@ -36,24 +38,38 @@ function Contato() {
     desafio: "",
   });
 
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+
   const update = (id: string, value: string) => setForm((f) => ({ ...f, [id]: value }));
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const body = [
-      `Nome: ${form.nome}`,
-      `Empresa: ${form.empresa}`,
-      `E-mail: ${form.email}`,
-      `Telefone: ${form.telefone || "-"}`,
-      "",
-      "Desafio:",
-      form.desafio,
-    ].join("\n");
-
-    window.location.href = `mailto:skillszum@gmail.com?subject=${encodeURIComponent(
-      `Conversa diagnóstica — ${form.empresa || form.nome}`,
-    )}&body=${encodeURIComponent(body)}`;
+    setStatus("sending");
+    try {
+      await submitLead({ data: form });
+      setStatus("sent");
+    } catch (error) {
+      console.error(error);
+      setStatus("error");
+    }
   };
+
+  if (status === "sent") {
+    return (
+      <section className="grain relative overflow-hidden">
+        <div className="shell max-w-3xl pt-20 pb-24 md:pt-28">
+          <p className="eyebrow rise">Mensagem recebida</p>
+          <h1 className="display-lg rise rise-delay-1 mt-6">
+            Obrigado, {form.nome.split(" ")[0]}. Em breve entraremos em contato.
+          </h1>
+          <p className="lead rise rise-delay-2 mt-6">
+            Vamos ler o seu contexto com atenção e responder por e-mail para agendar a conversa
+            diagnóstica.
+          </p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="grain relative overflow-hidden">
@@ -112,13 +128,26 @@ function Contato() {
             />
           </div>
 
-          <button type="submit" className="btn-primary w-full justify-center">
-            Enviar e agendar conversa
+          <button
+            type="submit"
+            disabled={status === "sending"}
+            className="btn-primary w-full justify-center disabled:pointer-events-none disabled:opacity-60"
+          >
+            {status === "sending" ? "Enviando…" : "Enviar e agendar conversa"}
           </button>
-          <p className="text-xs text-muted-foreground">
-            Ao enviar, abrimos seu programa de e-mail com a mensagem já preenchida para
-            skillszum@gmail.com.
-          </p>
+          {status === "error" ? (
+            <p role="alert" className="text-sm text-destructive">
+              Não conseguimos enviar agora. Tente novamente ou escreva para{" "}
+              <a href="mailto:skillszum@gmail.com" className="underline">
+                skillszum@gmail.com
+              </a>
+              .
+            </p>
+          ) : (
+            <p className="text-xs text-muted-foreground">
+              Respondemos por e-mail para combinar o melhor horário.
+            </p>
+          )}
         </form>
       </div>
     </section>
