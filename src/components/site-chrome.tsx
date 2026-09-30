@@ -1,8 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 
-import zumIsotipo from "../assets/zum-isotipo.png.asset.json";
-import zumLogo from "../assets/zum-logo.png.asset.json";
+import zumIsotipo from "../assets/zum-isotipo.webp";
+import zumLogo from "../assets/zum-logo.webp";
 
 const nav = [
   { to: "/", label: "Início" },
@@ -19,7 +19,7 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 border-b border-border bg-background/85 backdrop-blur-md">
       <div className="shell flex h-18 items-center justify-between py-4">
         <Link to="/" className="flex items-center" onClick={() => setOpen(false)}>
-          <img src={zumIsotipo.url} alt="Zum Educação Corporativa" className="h-10 w-auto" />
+          <img src={zumIsotipo} alt="Zum Educação Corporativa" className="h-10 w-auto" />
         </Link>
 
         <nav className="hidden items-center gap-9 md:flex">
@@ -87,7 +87,7 @@ export function SiteFooter() {
     <footer className="hairline">
       <div className="shell grid gap-12 py-16 md:grid-cols-[1.4fr_1fr_1fr]">
         <div>
-          <img src={zumLogo.url} alt="Zum Educação Corporativa" className="h-9 w-auto" />
+          <img src={zumLogo} alt="Zum Educação Corporativa" className="h-9 w-auto" />
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
             Aprender não é acumular conhecimento. É gerar movimento.
           </p>

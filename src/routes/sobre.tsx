@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
-import pedroPhoto from "@/assets/pedro-demetrius.png.asset.json";
+import pedroPhoto from "@/assets/pedro-demetrius.png";
 
 export const Route = createFileRoute("/sobre")({
   head: () => ({
@@ -53,7 +53,7 @@ function Sobre() {
         <div className="shell grid gap-14 md:grid-cols-[0.85fr_1.15fr]">
           <div>
             <img
-              src={pedroPhoto.url}
+              src={pedroPhoto}
               alt="Pedro Demetrius, fundador da Zum"
               loading="lazy"
               width={1080}
