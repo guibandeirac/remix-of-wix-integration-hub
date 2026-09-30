@@ -65,7 +65,7 @@ export type Article = ArticleSummary & {
   content: RichNode[];
 };
 
-type WixPost = NonNullable<(typeof posts)["GetPostBySlugResponse"]> extends never ? never : NonNullable<(typeof posts)["GetPostBySlugResponse"]>["post"];
+type WixPost = NonNullable<(typeof posts)["GetPostBySlugResponse"]>["post"];
 
 function coverUrl(post: WixPost, width: number, height: number) {
   const image = post.media?.wixMedia?.image;
@@ -149,7 +149,7 @@ export const submitLead = createServerFn({ method: "POST" })
         name: { first: first ?? null, last: rest.join(" ") || null },
         company: data.empresa,
         emails: { items: [{ email: data.email, tag: "MAIN" }] },
-        phones: data.telefone ? { items: [{ phone: data.telefone, tag: "MOBILE" }] } : undefined,
+        ...(data.telefone ? { phones: { items: [{ phone: data.telefone, tag: "MOBILE" }] } } : {}),
         labelKeys: { items: [labelKey] },
       });
       if (!contact) throw new Error("Não foi possível registrar o contato no CRM");
