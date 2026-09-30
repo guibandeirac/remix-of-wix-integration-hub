@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 
+import zumIsotipo from "../assets/zum-isotipo.png.asset.json";
 import zumLogo from "../assets/zum-logo.png.asset.json";
 
 const nav = [
