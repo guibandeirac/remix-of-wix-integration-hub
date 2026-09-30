@@ -1,7 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
 import { notFound } from "@tanstack/react-router";
 import { ApiKeyStrategy, createClient, media, OAuthStrategy } from "@wix/sdk";
-import { posts } from "@wix/blog";
+import { posts, type GetPostBySlugResponse } from "@wix/blog";
+
 import { contacts, labels, notes } from "@wix/crm";
 import { z } from "zod";
 
