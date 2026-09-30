@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { notFound } from "@tanstack/react-router";
 import { ApiKeyStrategy, createClient, media, OAuthStrategy } from "@wix/sdk";
 import { posts } from "@wix/blog";
+
 import { contacts, labels, notes } from "@wix/crm";
 import { z } from "zod";
 
@@ -30,6 +31,12 @@ function createVisitorClient() {
 function getVisitorClient() {
   visitorClient ??= createVisitorClient();
   return visitorClient;
+}
+
+// The blog degrades gracefully when Wix is not configured yet: the site stays
+// browsable (empty article list / 404 per article) instead of crashing.
+function isWixConfigured() {
+  return Boolean(process.env["WIX_CLIENT_ID"]);
 }
 
 // Admin client (writes to the CRM). Needs an API key with "Manage Contacts" permission.
@@ -64,7 +71,11 @@ export type Article = ArticleSummary & {
   content: RichNode[];
 };
 
-type WixPost = NonNullable<Awaited<ReturnType<typeof posts.getPostBySlug>>["post"]>;
+async function fetchPostBySlug(slug: string) {
+  return getVisitorClient().posts.getPostBySlug(slug);
+}
+
+type WixPost = NonNullable<Awaited<ReturnType<typeof fetchPostBySlug>>["post"]>;
 
 function coverUrl(post: WixPost, width: number, height: number) {
   const image = post.media?.wixMedia?.image;
@@ -86,20 +97,33 @@ function toSummary(post: WixPost): ArticleSummary {
 
 export const listArticles = createServerFn({ method: "GET" }).handler(
   async (): Promise<ArticleSummary[]> => {
-    const { posts: items } = await getVisitorClient().posts.listPosts({
-      paging: { limit: 100 },
-      sort: "PUBLISHED_DATE_DESC",
-    });
-    return items.map(toSummary);
+    if (!isWixConfigured()) return [];
+    try {
+      const { posts: items } = await getVisitorClient().posts.listPosts({
+        paging: { limit: 100 },
+        sort: "PUBLISHED_DATE_DESC",
+      });
+      return (items ?? []).map(toSummary);
+    } catch {
+      return [];
+    }
   },
 );
 
 export const getArticle = createServerFn({ method: "GET" })
   .inputValidator((slug: string) => z.string().min(1).parse(slug))
   .handler(async ({ data: slug }): Promise<Article> => {
-    const { post } = await getVisitorClient()
-      .posts.getPostBySlug(slug, { fieldsets: ["RICH_CONTENT"] })
-      .catch(() => ({ post: undefined }));
+    if (!isWixConfigured()) throw notFound();
+
+    let post: WixPost | undefined;
+    try {
+      const result = await getVisitorClient().posts.getPostBySlug(slug, {
+        fieldsets: ["RICH_CONTENT"],
+      });
+      post = result.post;
+    } catch {
+      throw notFound();
+    }
     if (!post) throw notFound();
 
     return {
@@ -128,6 +152,8 @@ export const submitLead = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const wix = getAdminClient();
     const { label } = await wix.labels.findOrCreateLabel(LEAD_LABEL);
+    const labelKey = label?.key;
+    if (!labelKey) throw new Error("Não foi possível preparar a etiqueta de lead no CRM");
 
     // Reuse the existing contact when this e-mail already exists in the CRM.
     const existing = await wix.contacts
@@ -139,16 +165,17 @@ export const submitLead = createServerFn({ method: "POST" })
     let contactId = existing.items[0]?._id;
 
     if (contactId) {
-      await wix.contacts.labelContact(contactId, [label.key]);
+      await wix.contacts.labelContact(contactId, [labelKey]);
     } else {
       const [first, ...rest] = data.nome.split(/\s+/);
       const { contact } = await wix.contacts.createContact({
-        name: { first, last: rest.join(" ") || undefined },
+        name: { first: first ?? null, last: rest.join(" ") || null },
         company: data.empresa,
         emails: { items: [{ email: data.email, tag: "MAIN" }] },
-        phones: data.telefone ? { items: [{ phone: data.telefone, tag: "MOBILE" }] } : undefined,
-        labelKeys: { items: [label.key] },
+        ...(data.telefone ? { phones: { items: [{ phone: data.telefone, tag: "MOBILE" }] } } : {}),
+        labelKeys: { items: [labelKey] },
       });
+      if (!contact) throw new Error("Não foi possível registrar o contato no CRM");
       contactId = contact._id!;
     }
 
