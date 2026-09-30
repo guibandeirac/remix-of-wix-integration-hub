@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { notFound } from "@tanstack/react-router";
 import { ApiKeyStrategy, createClient, media, OAuthStrategy } from "@wix/sdk";
-import { posts, type GetPostBySlugResponse } from "@wix/blog";
+import { posts } from "@wix/blog";
 
 import { contacts, labels, notes } from "@wix/crm";
 import { z } from "zod";
@@ -65,7 +65,7 @@ export type Article = ArticleSummary & {
   content: RichNode[];
 };
 
-type WixPost = NonNullable<GetPostBySlugResponse["post"]>;
+type WixPost = NonNullable<(typeof posts)["GetPostBySlugResponse"]> extends never ? never : NonNullable<(typeof posts)["GetPostBySlugResponse"]>["post"];
 
 function coverUrl(post: WixPost, width: number, height: number) {
   const image = post.media?.wixMedia?.image;
