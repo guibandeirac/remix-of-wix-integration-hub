@@ -20,7 +20,6 @@ export type RichNode = {
     caption?: string;
     link?: { url?: string };
   };
-  captionData?: unknown;
 };
 
 function wixImageUrl(src?: { id?: string; url?: string }) {
