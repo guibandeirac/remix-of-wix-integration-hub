@@ -65,7 +65,7 @@ export type Article = ArticleSummary & {
   content: RichNode[];
 };
 
-type WixPost = NonNullable<Awaited<ReturnType<typeof posts.getPostBySlug>>["post"]>;
+type WixPost = NonNullable<GetPostBySlugResponse["post"]>;
 
 function coverUrl(post: WixPost, width: number, height: number) {
   const image = post.media?.wixMedia?.image;
@@ -91,7 +91,7 @@ export const listArticles = createServerFn({ method: "GET" }).handler(
       paging: { limit: 100 },
       sort: "PUBLISHED_DATE_DESC",
     });
-    return items.map(toSummary);
+    return (items ?? []).map(toSummary);
   },
 );
 
@@ -129,6 +129,8 @@ export const submitLead = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const wix = getAdminClient();
     const { label } = await wix.labels.findOrCreateLabel(LEAD_LABEL);
+    const labelKey = label?.key;
+    if (!labelKey) throw new Error("Não foi possível preparar a etiqueta de lead no CRM");
 
     // Reuse the existing contact when this e-mail already exists in the CRM.
     const existing = await wix.contacts
@@ -140,16 +142,17 @@ export const submitLead = createServerFn({ method: "POST" })
     let contactId = existing.items[0]?._id;
 
     if (contactId) {
-      await wix.contacts.labelContact(contactId, [label.key]);
+      await wix.contacts.labelContact(contactId, [labelKey]);
     } else {
       const [first, ...rest] = data.nome.split(/\s+/);
       const { contact } = await wix.contacts.createContact({
-        name: { first, last: rest.join(" ") || undefined },
+        name: { first: first ?? null, last: rest.join(" ") || null },
         company: data.empresa,
         emails: { items: [{ email: data.email, tag: "MAIN" }] },
         phones: data.telefone ? { items: [{ phone: data.telefone, tag: "MOBILE" }] } : undefined,
-        labelKeys: { items: [label.key] },
+        labelKeys: { items: [labelKey] },
       });
+      if (!contact) throw new Error("Não foi possível registrar o contato no CRM");
       contactId = contact._id!;
     }
 
