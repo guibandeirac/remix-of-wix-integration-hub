@@ -1,6 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 
+import zumLogo from "../assets/zum-logo.png.asset.json";
+
 const nav = [
   { to: "/", label: "Início" },
   { to: "/solucoes", label: "Soluções" },
