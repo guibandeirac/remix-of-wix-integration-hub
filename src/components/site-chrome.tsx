@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 
+import zumIsotipo from "../assets/zum-isotipo.png.asset.json";
 import zumLogo from "../assets/zum-logo.png.asset.json";
 
 const nav = [
@@ -18,7 +19,7 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 border-b border-border bg-background/85 backdrop-blur-md">
       <div className="shell flex h-18 items-center justify-between py-4">
         <Link to="/" className="flex items-center" onClick={() => setOpen(false)}>
-          <img src={zumLogo.url} alt="Zum Educação Corporativa" className="h-8 w-auto" />
+          <img src={zumIsotipo.url} alt="Zum Educação Corporativa" className="h-10 w-auto" />
         </Link>
 
         <nav className="hidden items-center gap-9 md:flex">
