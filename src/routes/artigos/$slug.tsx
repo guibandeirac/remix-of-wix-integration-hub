@@ -3,6 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { RichContent } from "@/components/rich-content";
 import { formatArticleDate } from "@/lib/format";
 import { getArticle } from "@/lib/wix";
+import { P } from "@/components/text";
 
 export const Route = createFileRoute("/artigos/$slug")({
   loader: ({ params }) => getArticle({ data: params.slug }),
@@ -33,10 +34,10 @@ function Artigo() {
           <Link to="/artigos" className="link-underline rise text-sm text-muted-foreground">
             ← Todos os artigos
           </Link>
-          <p className="rise rise-delay-1 mt-10 text-xs tracking-wide text-muted-foreground uppercase">
+          <P className="meta rise rise-delay-1 mt-10">
             {formatArticleDate(article.publishedAt)}
             {article.minutesToRead > 0 && ` · ${article.minutesToRead} min de leitura`}
-          </p>
+          </P>
           <h1 className="display-lg rise rise-delay-1 mt-5">{article.title}</h1>
         </div>
       </header>
@@ -59,7 +60,7 @@ function Artigo() {
 
       <section className="hairline section">
         <div className="shell max-w-3xl">
-          <p className="eyebrow">Conversa diagnóstica</p>
+          <P className="eyebrow">Conversa diagnóstica</P>
           <h2 className="display-lg mt-6">Esse desafio parece com o da sua operação?</h2>
           <div className="mt-10 flex flex-wrap gap-3">
             <Link to="/contato" className="btn-primary">

@@ -13,12 +13,14 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteFooter, SiteHeader } from "../components/site-chrome";
+import { ChromeIsotipo } from "../components/brand-graphics";
 
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <p className="eyebrow">404</p>
+        <ChromeIsotipo className="mx-auto mb-8 w-40" />
+        <p className="eyebrow justify-center">404</p>
         <h1 className="mt-4 text-3xl font-semibold text-foreground">Página não encontrada</h1>
         <p className="mt-3 text-sm text-muted-foreground">
           O endereço que você abriu não existe ou foi movido.
@@ -89,7 +91,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300..600;1,9..40,400&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Geist:wght@300..600&display=swap",
+      },
+      {
+        rel: "preload",
+        href: "/fonts/exo2-bold.woff2",
+        as: "font",
+        type: "font/woff2",
+        crossOrigin: "anonymous",
+      },
+      {
+        rel: "preload",
+        href: "/fonts/exo2-semibold.woff2",
+        as: "font",
+        type: "font/woff2",
+        crossOrigin: "anonymous",
       },
       { rel: "icon", type: "image/png", href: "/favicon.png" },
     ],

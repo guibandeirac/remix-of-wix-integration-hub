@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { P } from "@/components/text";
 
 // Minimal renderer for Wix Ricos rich content (blog posts). Wix colors and
 // alignments are ignored on purpose so articles follow the site's own typography.
@@ -61,7 +62,7 @@ function renderNode(node: RichNode, key: number): ReactNode {
     case "PARAGRAPH":
       // Wix uses empty paragraphs as spacers; the stylesheet already spaces blocks.
       if (!node.nodes?.some((n) => n.textData?.text?.trim())) return null;
-      return <p key={key}>{children(node)}</p>;
+      return <P key={key}>{children(node)}</P>;
     case "HEADING": {
       const level = Math.min(Math.max(node.headingData?.level ?? 2, 2), 4);
       const Tag = `h${level}` as "h2" | "h3" | "h4";

@@ -1,6 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
-import pedroPhoto from "@/assets/pedro-demetrius.png";
+import { PedroPortrait } from "@/components/pedro-portrait";
+import { IsotipoOutline } from "@/components/brand-graphics";
+import { ObjectPlate } from "@/components/zum-object";
+import { P } from "@/components/text";
 
 export const Route = createFileRoute("/sobre")({
   head: () => ({
@@ -40,66 +43,74 @@ const trajetoria = [
 function Sobre() {
   return (
     <>
-      <section className="grain relative overflow-hidden">
-        <div className="shell pt-20 pb-16 md:pt-28">
-          <p className="eyebrow rise">Sobre</p>
+      <section className="grain relative isolate overflow-hidden">
+        <IsotipoOutline className="absolute top-[-30%] right-[-18%] -z-10 w-[min(980px,120vw)] opacity-80" />
+        <div className="shell pt-20 pb-20 md:pt-28 md:pb-28">
+          <P className="eyebrow rise">Sobre</P>
           <h1 className="display-xl rise rise-delay-1 mt-6 max-w-3xl">
-            Ciência, estratégia e cuidado com quem aprende.
+            Ciência, estratégia e <em>cuidado</em> com quem aprende.
           </h1>
         </div>
       </section>
 
       <section className="hairline section">
-        <div className="shell grid gap-14 md:grid-cols-[0.85fr_1.15fr]">
+        <div className="shell grid items-start gap-14 md:grid-cols-[1fr_1fr] lg:gap-20">
+          <PedroPortrait className="md:sticky md:top-28" />
           <div>
-            <img
-              src={pedroPhoto}
-              alt="Pedro Demetrius, fundador da Zum"
-              loading="lazy"
-              width={1080}
-              height={1350}
-              className="w-full rounded-3xl border border-border object-cover"
-            />
-          </div>
-          <div>
-            <p className="eyebrow">Fundador</p>
+            <P className="eyebrow">Fundador</P>
             <h2 className="display-lg mt-5">Pedro Demetrius</h2>
-            <p className="lead mt-6">
+            <P className="lead mt-6">
               Psicólogo e fundador da Zum, Pedro atua no desenvolvimento de pessoas e lideranças por
               meio de soluções de aprendizagem que unem ciência, estratégia e resultados.
-            </p>
-            <div className="mt-10 grid gap-px overflow-hidden rounded-2xl border border-border bg-border">
-              {trajetoria.map((item) => (
-                <article key={item.title} className="bg-background p-7">
-                  <h3 className="text-lg">{item.title}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{item.text}</p>
+            </P>
+            <div className="mt-10 border-t border-border">
+              {trajetoria.map((item, i) => (
+                <article
+                  key={item.title}
+                  className="grid gap-3 border-b border-border py-7 sm:grid-cols-[4rem_1fr]"
+                >
+                  <span className="num">[{String(i + 1).padStart(2, "0")}]</span>
+                  <div>
+                    <h3 className="text-lg font-medium tracking-tight">{item.title}</h3>
+                    <P className="copy-sm mt-3">{item.text}</P>
+                  </div>
                 </article>
               ))}
             </div>
-            <p className="mt-8 text-base leading-relaxed text-muted-foreground">
+            <P className="copy mt-8">
               Na Zum, sua missão é ajudar organizações a desenvolver líderes e equipes capazes de
               gerar resultados sustentáveis por meio de experiências de aprendizagem que realmente
               impactam o comportamento e a cultura.
-            </p>
+            </P>
           </div>
         </div>
       </section>
 
       <section className="section hairline">
-        <div className="shell max-w-3xl">
-          <p className="eyebrow">Propósito</p>
-          <h2 className="display-lg mt-6">
-            Fazer o aprendizado acontecer de verdade, impulsionando a evolução das pessoas e o
-            crescimento sustentável dos negócios.
-          </h2>
-          <div className="mt-10 flex flex-wrap gap-3">
-            <Link to="/contato" className="btn-primary">
-              Conversar com a Zum
-            </Link>
-            <Link to="/solucoes" className="btn-ghost">
-              Ver soluções
-            </Link>
+        <div className="shell grid items-center gap-12 md:grid-cols-[1.2fr_0.8fr] lg:gap-20">
+          <div className="max-w-3xl">
+            <P className="eyebrow">Propósito</P>
+            <h2 className="display-md mt-6">
+              Fazer o aprendizado acontecer <em>de verdade</em>, impulsionando a evolução das
+              pessoas e o crescimento sustentável dos negócios.
+            </h2>
+            <div className="mt-10 flex flex-wrap gap-3">
+              <Link to="/contato" className="btn-primary">
+                Conversar com a Zum
+              </Link>
+              <Link to="/solucoes" className="btn-ghost">
+                Ver soluções
+              </Link>
+            </div>
           </div>
+          <ObjectPlate
+            name="cross"
+            index="04"
+            label="Conexão"
+            note="Ciência · Estratégia · Pessoas"
+            ratio="1 / 1"
+            size="46%"
+          />
         </div>
       </section>
     </>

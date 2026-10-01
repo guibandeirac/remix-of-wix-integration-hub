@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
+import { ObjectPlate } from "@/components/zum-object";
 import { submitLead } from "@/lib/wix";
+import { P } from "@/components/text";
 
 export const Route = createFileRoute("/contato")({
   head: () => ({
@@ -58,14 +60,14 @@ function Contato() {
     return (
       <section className="grain relative overflow-hidden">
         <div className="shell max-w-3xl pt-20 pb-24 md:pt-28">
-          <p className="eyebrow rise">Mensagem recebida</p>
+          <P className="eyebrow rise">Mensagem recebida</P>
           <h1 className="display-lg rise rise-delay-1 mt-6">
             Obrigado, {form.nome.split(" ")[0]}. Em breve entraremos em contato.
           </h1>
-          <p className="lead rise rise-delay-2 mt-6">
+          <P className="lead rise rise-delay-2 mt-6">
             Vamos ler o seu contexto com atenção e responder por e-mail para agendar a conversa
             diagnóstica.
-          </p>
+          </P>
         </div>
       </section>
     );
@@ -75,23 +77,33 @@ function Contato() {
     <section className="grain relative overflow-hidden">
       <div className="shell grid gap-16 pt-20 pb-24 md:grid-cols-[0.9fr_1.1fr] md:pt-28">
         <div>
-          <p className="eyebrow rise">Contato</p>
+          <P className="eyebrow rise">Contato</P>
           <h1 className="display-lg rise rise-delay-1 mt-6">Vamos começar pelo seu contexto.</h1>
-          <p className="lead rise rise-delay-2 mt-6 max-w-md">
+          <P className="lead rise rise-delay-2 mt-6 max-w-md">
             Conte qual comportamento precisa mudar na sua operação. A conversa diagnóstica é sem
             compromisso e serve para entender se faz sentido trabalharmos juntos.
-          </p>
+          </P>
           <div className="mt-10 space-y-3 text-sm text-muted-foreground">
-            <p>
+            <P className="ui-text">
               Prefere e-mail direto?{" "}
               <a href="mailto:skillszum@gmail.com" className="text-foreground underline">
                 skillszum@gmail.com
               </a>
-            </p>
+            </P>
           </div>
+          <ObjectPlate
+            name="coil"
+            index="05"
+            label="Diálogo"
+            note="Escutar antes de propor"
+            ratio="5 / 4"
+            size="40%"
+            priority
+            className="mt-14 hidden max-w-md md:flex"
+          />
         </div>
 
-        <form onSubmit={handleSubmit} className="panel rise rise-delay-2 space-y-6">
+        <form onSubmit={handleSubmit} className="panel self-start rise rise-delay-2 space-y-6">
           <div className="grid gap-6 sm:grid-cols-2">
             {fields.map((field) => (
               <div key={field.id} className="flex flex-col gap-2">
@@ -136,17 +148,17 @@ function Contato() {
             {status === "sending" ? "Enviando…" : "Enviar e agendar conversa"}
           </button>
           {status === "error" ? (
-            <p role="alert" className="text-sm text-destructive">
+            <P role="alert" className="ui-text text-sm text-destructive">
               Não conseguimos enviar agora. Tente novamente ou escreva para{" "}
               <a href="mailto:skillszum@gmail.com" className="underline">
                 skillszum@gmail.com
               </a>
               .
-            </p>
+            </P>
           ) : (
-            <p className="text-xs text-muted-foreground">
+            <P className="ui-text text-xs text-muted-foreground">
               Respondemos por e-mail para combinar o melhor horário.
-            </p>
+            </P>
           )}
         </form>
       </div>

@@ -32,35 +32,100 @@
   --color-ring: var(--ring);
   --color-surface: var(--surface);
   --color-surface-foreground: var(--surface-foreground);
-  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  /* Exo 2: fonte da marca para títulos, interface e destaques.
+     Geist: sem serifa minimalista para a leitura de textos longos. */
+  --font-display: "Exo 2", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Exo 2", ui-sans-serif, system-ui, sans-serif;
+  --font-text: "Geist", ui-sans-serif, system-ui, sans-serif;
+}
+
+@font-face {
+  font-family: "Exo 2";
+  src: url("/fonts/exo2-light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Exo 2";
+  src: url("/fonts/exo2-lightitalic.woff2") format("woff2");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Exo 2";
+  src: url("/fonts/exo2-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Exo 2";
+  src: url("/fonts/exo2-italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Exo 2";
+  src: url("/fonts/exo2-medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Exo 2";
+  src: url("/fonts/exo2-semibold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Exo 2";
+  src: url("/fonts/exo2-bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Exo 2";
+  src: url("/fonts/exo2-extrabold.woff2") format("woff2");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
 }
 
 :root {
   --radius: 0.25rem;
 
-  /* Zum palette: carvão, azul aço, cinza, cinza claro, quase branco */
-  --background: oklch(0.19 0.003 250);
-  --foreground: oklch(0.975 0.001 250);
-  --surface: oklch(0.25 0.004 250);
-  --surface-foreground: oklch(0.975 0.001 250);
-  --card: oklch(0.25 0.004 250);
-  --card-foreground: oklch(0.975 0.001 250);
-  --popover: oklch(0.25 0.004 250);
-  --popover-foreground: oklch(0.975 0.001 250);
-  --primary: oklch(0.755 0.036 245);
-  --primary-foreground: oklch(0.19 0.003 250);
-  --secondary: oklch(0.29 0.004 250);
-  --secondary-foreground: oklch(0.975 0.001 250);
-  --muted: oklch(0.29 0.004 250);
-  --muted-foreground: oklch(0.74 0.006 250);
-  --accent: oklch(0.755 0.036 245);
-  --accent-foreground: oklch(0.19 0.003 250);
+  /* Paleta oficial (brand guide): #232323 carvão, #A0B3C4 azul aço, #6E7375 cinza,
+     #CCCCCC cinza claro, #F9F9F9 off-white. O fundo é um carvão um tom abaixo do
+     #232323 para os cartões ganharem relevo. */
+  --background: #161719;
+  --foreground: #f9f9f9;
+  --surface: #1e1f21;
+  --surface-foreground: #f9f9f9;
+  --card: #1e1f21;
+  --card-foreground: #f9f9f9;
+  --popover: #232323;
+  --popover-foreground: #f9f9f9;
+  --primary: #a0b3c4;
+  --primary-foreground: #161719;
+  --secondary: #232323;
+  --secondary-foreground: #f9f9f9;
+  --muted: #232323;
+  --muted-foreground: #a9aeb3;
+  --accent: #a0b3c4;
+  --accent-foreground: #161719;
   --destructive: oklch(0.6 0.19 25);
-  --destructive-foreground: oklch(0.975 0.001 250);
-  --border: oklch(1 0 0 / 12%);
-  --input: oklch(1 0 0 / 16%);
-  --ring: oklch(0.755 0.036 245);
+  --destructive-foreground: #f9f9f9;
+  --border: rgb(249 249 249 / 0.1);
+  --input: rgb(249 249 249 / 0.16);
+  --ring: #a0b3c4;
+  --steel: #a0b3c4;
+  --graphite: #6e7375;
+  --line: rgb(160 179 196 / 0.22);
 }
 
 @layer base {
@@ -73,6 +138,7 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
   }
 
   h1,
@@ -87,8 +153,29 @@
     text-wrap: balance;
   }
 
+  /* Destaque editorial dentro dos títulos: Exo 2 Light Italic com brilho metálico. */
+  :is(h1, h2) em {
+    font-style: italic;
+    font-weight: 300;
+    background: linear-gradient(100deg, #f9f9f9 0%, #a0b3c4 55%, #e6ecf2 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    padding-right: 0.06em;
+  }
+
+  /* Texto corrido: sem serifa, alinhado à esquerda por padrão. O componente <P>
+     mede cada parágrafo e só ativa o justificado quando os espaços entre as
+     palavras continuam discretos (ver src/components/text.tsx). */
   p {
+    font-family: var(--font-text);
     text-wrap: pretty;
+  }
+
+  p[data-justify] {
+    text-align: justify;
+    text-align-last: left;
+    text-wrap: wrap;
   }
 
   ::selection {
@@ -97,36 +184,107 @@
   }
 }
 
-/* Tipografia de marca */
+/* Tipografia de marca
+   Hierarquia inspirada no brand guide: Exo 2 SemiBold no título principal, Medium
+   nos títulos de seção, Regular nas frases-manifesto e Light Italic nos destaques
+   e numerais. O texto corrido usa Geist, uma sem serifa minimalista. */
 @utility eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   font-family: var(--font-display);
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.22em;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
+  text-align: left;
   color: var(--color-primary);
+
+  &::before {
+    content: "";
+    width: 1.75rem;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.7;
+  }
 }
 
 @utility display-xl {
   font-family: var(--font-display);
   font-weight: 600;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.035em;
   line-height: 0.98;
-  font-size: clamp(2.5rem, 7vw, 5.25rem);
+  font-size: clamp(2.05rem, 5.2vw, 4.25rem);
 }
 
 @utility display-lg {
   font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.04;
+  font-size: clamp(2rem, 4.4vw, 3.4rem);
+}
+
+@utility display-md {
+  font-family: var(--font-display);
+  font-weight: 400;
   letter-spacing: -0.025em;
-  line-height: 1.02;
-  font-size: clamp(2rem, 4.6vw, 3.5rem);
+  line-height: 1.14;
+  font-size: clamp(1.7rem, 3.2vw, 2.6rem);
 }
 
 @utility lead {
-  font-size: clamp(1.0625rem, 1.5vw, 1.3125rem);
-  line-height: 1.6;
+  font-family: var(--font-text);
+  font-weight: 300;
+  font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
+  line-height: 1.65;
+  letter-spacing: -0.005em;
   color: var(--color-muted-foreground);
+}
+
+/* Texto corrido em blocos e cartões */
+@utility copy {
+  font-family: var(--font-text);
+  font-size: 1.0625rem;
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--color-muted-foreground);
+}
+
+@utility copy-sm {
+  font-family: var(--font-text);
+  font-size: 0.9375rem;
+  font-weight: 300;
+  line-height: 1.68;
+  color: var(--color-muted-foreground);
+}
+
+/* Rótulos e metadados curtos ficam na fonte da marca */
+@utility meta {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: left;
+  color: var(--color-muted-foreground);
+}
+
+@utility ui-text {
+  font-family: var(--font-display);
+  text-align: left;
+}
+
+/* Numeral editorial entre colchetes, como o [1] do brand guide */
+@utility num {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-style: italic;
+  font-size: 1.5rem;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-primary);
 }
 
 /* Estrutura */
@@ -159,8 +317,8 @@
   border-radius: 999px;
   font-family: var(--font-display);
   font-size: 0.9375rem;
-  font-weight: 500;
-  letter-spacing: 0.02em;
+  font-weight: 600;
+  letter-spacing: 0.03em;
   background: var(--color-primary);
   color: var(--color-primary-foreground);
   transition:
@@ -185,7 +343,8 @@
   border: 1px solid var(--color-input);
   font-family: var(--font-display);
   font-size: 0.9375rem;
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: 0.03em;
   color: var(--color-foreground);
   transition:
     background 240ms ease,
@@ -244,19 +403,17 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.35;
-    background-image: radial-gradient(
-      color-mix(in oklab, var(--color-foreground) 9%, transparent) 0.5px,
-      transparent 0.5px
-    );
-    background-size: 3px 3px;
+    opacity: 0.09;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.4 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 }
 
 /* Artigos (conteúdo vindo do Wix Blog) */
 @utility article-body {
+  font-family: var(--font-text);
   font-size: 1.125rem;
-  line-height: 1.8;
+  line-height: 1.85;
   color: color-mix(in oklab, var(--color-foreground) 86%, transparent);
 
   & > * + * {
@@ -305,7 +462,9 @@
     border-left: 2px solid var(--color-primary);
     padding-left: 1.4em;
     font-family: var(--font-display);
-    font-size: 1.3rem;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 1.4rem;
     line-height: 1.5;
     color: var(--color-foreground);
   }
@@ -323,6 +482,7 @@
 
   & figcaption {
     margin-top: 0.75rem;
+    font-family: var(--font-display);
     font-size: 0.875rem;
     color: var(--color-muted-foreground);
   }
@@ -364,3 +524,752 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* Elementos da marca                                                 */
+/* ------------------------------------------------------------------ */
+
+@layer components {
+  /* Objetos 3D (PNGs do kit): sempre ancorados em uma lâmina editorial. */
+  .zum-object {
+    position: relative;
+    perspective: 1200px;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .zum-object-body {
+    position: relative;
+    transform-style: preserve-3d;
+    will-change: transform;
+    opacity: 0;
+    scale: 0.92;
+    filter: blur(8px);
+    transition:
+      opacity 1.2s ease,
+      scale 1.6s cubic-bezier(0.22, 1, 0.36, 1),
+      filter 1.2s ease;
+  }
+
+  .zum-object[data-visible] .zum-object-body {
+    opacity: 1;
+    scale: 1;
+    filter: blur(0);
+  }
+
+  .zum-object-float {
+    position: relative;
+    animation: zum-float var(--float-dur, 9s) ease-in-out infinite alternate;
+  }
+
+  .zum-object-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 28px 30px rgb(0 0 0 / 0.45));
+  }
+
+  /* Brilho especular recortado pelo próprio PNG: acompanha a inclinação. */
+  .zum-object-sheen {
+    position: absolute;
+    inset: 0;
+    mask-size: 100% 100%;
+    -webkit-mask-size: 100% 100%;
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+    background: radial-gradient(
+      circle at var(--sx, 50%) var(--sy, 38%),
+      rgb(255 255 255 / 0.7),
+      transparent 36%
+    );
+    mix-blend-mode: overlay;
+    opacity: calc(0.25 + var(--glow, 0.5) * 0.55);
+  }
+
+  .zum-object-shadow {
+    position: absolute;
+    left: 22%;
+    right: 22%;
+    bottom: -4%;
+    height: 6%;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgb(0 0 0 / 0.55), transparent 70%);
+    filter: blur(10px);
+    animation: zum-shadow var(--float-dur, 9s) ease-in-out infinite alternate;
+  }
+
+  /* Lâmina: moldura editorial com grid, marcas de corte e legenda. */
+  .plate {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-2xl);
+    background: var(--plate-bg, #1b1c1e);
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .plate-stage {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: var(--plate-ratio, 1 / 1);
+    background:
+      radial-gradient(120% 90% at 30% 10%, rgb(160 179 196 / 0.16), transparent 60%),
+      linear-gradient(160deg, #26282b 0%, #18191b 70%);
+    overflow: hidden;
+
+    /* grid de construção */
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, var(--line) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--line) 1px, transparent 1px);
+      background-size: 12.5% 12.5%;
+      background-position: center;
+      mask-image: radial-gradient(circle at 50% 50%, #000 20%, transparent 78%);
+      opacity: 0.55;
+      z-index: -1;
+    }
+  }
+
+  /* marcas de corte nos cantos */
+  .plate-marks {
+    position: absolute;
+    inset: 14px;
+    pointer-events: none;
+    background:
+      linear-gradient(var(--steel), var(--steel)) top left / 12px 1px,
+      linear-gradient(var(--steel), var(--steel)) top left / 1px 12px,
+      linear-gradient(var(--steel), var(--steel)) top right / 12px 1px,
+      linear-gradient(var(--steel), var(--steel)) top right / 1px 12px,
+      linear-gradient(var(--steel), var(--steel)) bottom left / 12px 1px,
+      linear-gradient(var(--steel), var(--steel)) bottom left / 1px 12px,
+      linear-gradient(var(--steel), var(--steel)) bottom right / 12px 1px,
+      linear-gradient(var(--steel), var(--steel)) bottom right / 1px 12px;
+    background-repeat: no-repeat;
+    opacity: 0.55;
+  }
+
+  .plate-caption {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem 1.15rem;
+    border-top: 1px solid var(--color-border);
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-muted-foreground);
+
+    & b {
+      font-weight: 600;
+      color: var(--color-foreground);
+    }
+  }
+
+  /* Isotipo vazado */
+  .iso-outline {
+    display: block;
+    overflow: hidden;
+    pointer-events: none;
+
+    & .iso-grid line {
+      stroke: var(--line);
+      stroke-width: 1;
+      vector-effect: non-scaling-stroke;
+      opacity: 0;
+      transition: opacity 1.6s ease;
+    }
+
+    & .iso-grid .iso-guide {
+      stroke: rgb(160 179 196 / 0.32);
+    }
+
+    & .iso-stroke {
+      fill: none;
+      stroke: var(--iso-stroke, rgb(204 204 204 / 0.5));
+      stroke-width: var(--iso-width, 1.2);
+      vector-effect: non-scaling-stroke;
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+      transition: stroke-dashoffset 3.2s cubic-bezier(0.65, 0, 0.25, 1);
+    }
+
+    & .iso-glow {
+      fill: none;
+      stroke-width: calc(var(--iso-width, 1.2) * 1.8);
+      vector-effect: non-scaling-stroke;
+      opacity: 0;
+      transition: opacity 1.4s ease 2.4s;
+    }
+
+    & .iso-nodes rect {
+      fill: var(--background);
+      stroke: var(--steel);
+      stroke-width: 1;
+      vector-effect: non-scaling-stroke;
+      opacity: 0;
+      transition: opacity 600ms ease;
+      transition-delay: calc(1.2s + var(--n) * 90ms);
+    }
+
+    &[data-visible] {
+      & .iso-grid line {
+        opacity: 1;
+      }
+      & .iso-stroke {
+        stroke-dashoffset: 0;
+      }
+      & .iso-glow {
+        opacity: 1;
+      }
+      & .iso-nodes rect {
+        opacity: 1;
+      }
+    }
+  }
+
+  /* Isotipo cromado */
+  .chrome-iso {
+    --tx: 0px;
+    --ty: 0px;
+    --lx: 30%;
+    --ly: 12%;
+    position: relative;
+  }
+
+  .chrome-iso-body {
+    position: relative;
+    transform: translate3d(var(--tx), var(--ty), 0);
+    will-change: transform;
+    opacity: 0;
+    translate: 0 18px;
+    transition:
+      opacity 1.6s ease 0.4s,
+      translate 2s cubic-bezier(0.22, 1, 0.36, 1) 0.4s;
+  }
+
+  .chrome-iso[data-visible] .chrome-iso-body {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  .chrome-iso-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    user-select: none;
+  }
+
+  /* Reflexo especular + faixa de reflexão, recortados pela forma do isotipo */
+  .chrome-iso-sheen {
+    position: absolute;
+    inset: 0;
+    mask-size: 100% 100%;
+    -webkit-mask-size: 100% 100%;
+    background:
+      radial-gradient(
+        circle at var(--lx) var(--ly),
+        rgb(255 255 255 / 0.85),
+        rgb(220 232 242 / 0.25) 18%,
+        transparent 38%
+      ),
+      linear-gradient(
+        112deg,
+        transparent calc(var(--lx) - 22%),
+        rgb(255 255 255 / 0.22) var(--lx),
+        transparent calc(var(--lx) + 22%)
+      );
+    mix-blend-mode: overlay;
+  }
+
+  .chrome-iso-rim {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+
+    & path {
+      fill: none;
+      stroke: rgb(249 249 249 / 0.32);
+      stroke-width: 1;
+      vector-effect: non-scaling-stroke;
+    }
+  }
+
+  .chrome-iso-shadow {
+    position: absolute;
+    left: 14%;
+    right: 14%;
+    bottom: -6%;
+    height: 8%;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgb(0 0 0 / 0.6), transparent 70%);
+    filter: blur(14px);
+  }
+
+  /* Trajetória (processo) */
+  .trajectory {
+    --progress: 0;
+    position: relative;
+    height: clamp(64px, 9vw, 120px);
+
+    & svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    & path {
+      fill: none;
+      vector-effect: non-scaling-stroke;
+    }
+  }
+
+  .trajectory-base {
+    stroke: var(--line);
+    stroke-width: 1;
+    stroke-dasharray: 2 6;
+  }
+
+  .trajectory-line {
+    stroke: var(--steel);
+    stroke-width: 1.5;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  .trajectory-node {
+    position: absolute;
+    width: 11px;
+    height: 11px;
+    translate: -50% -50%;
+    border-radius: 50%;
+    border: 1px solid var(--steel);
+    background: var(--background);
+    --on: clamp(0, (var(--progress) - var(--at)) * 12, 1);
+    scale: calc(0.6 + var(--on) * 0.4);
+    box-shadow: 0 0 calc(var(--on) * 18px) rgb(160 179 196 / calc(var(--on) * 0.7));
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 2px;
+      border-radius: 50%;
+      background: var(--steel);
+      opacity: var(--on);
+    }
+  }
+
+  /* Seção clara, como as páginas cinza do brand guide */
+  .section-light {
+    --background: #eceef0;
+    --foreground: #232323;
+    --surface: #f9f9f9;
+    --card: #f9f9f9;
+    --primary: #5d7183;
+    --primary-foreground: #f9f9f9;
+    --secondary: #e1e5e9;
+    --muted-foreground: #565b5f;
+    --border: rgb(35 35 35 / 0.12);
+    --input: rgb(35 35 35 / 0.2);
+    --steel: #7d91a3;
+    --line: rgb(35 35 35 / 0.08);
+    /* utilitários próprios leem as variáveis --color-*, resolvidas no :root */
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-surface: var(--surface);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    position: relative;
+    background:
+      radial-gradient(90% 70% at 85% 0%, rgb(160 179 196 / 0.45), transparent 60%),
+      linear-gradient(180deg, #f2f3f4 0%, #e3e6e9 100%);
+    color: var(--foreground);
+    overflow: hidden;
+    isolation: isolate;
+
+    & :is(h1, h2) em {
+      background: linear-gradient(100deg, #232323 0%, #5d7183 60%, #232323 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+  }
+
+  /* Assinatura do rodapé: ZUM© vazado em escala monumental */
+  .footer-mark {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(6rem, 30vw, 27rem);
+    line-height: 0.78;
+    letter-spacing: -0.07em;
+    color: transparent;
+    -webkit-text-stroke: 1px rgb(160 179 196 / 0.28);
+    user-select: none;
+    white-space: nowrap;
+  }
+}
+
+@keyframes zum-float {
+  from {
+    transform: translate3d(0, -6px, 0);
+  }
+  to {
+    transform: translate3d(0, 6px, 0);
+  }
+}
+
+@keyframes zum-shadow {
+  from {
+    transform: scale(0.9);
+    opacity: 0.7;
+  }
+  to {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Retrato interativo do Pedro                                        */
+/* ------------------------------------------------------------------ */
+
+@layer components {
+  .pp-scene {
+    --px: 0;
+    --py: 0;
+    --sp: 0;
+    --lx: 50%;
+    --ly: 35%;
+    perspective: 1400px;
+  }
+
+  .pp-stage {
+    transform: rotateX(calc(var(--py) * -5deg)) rotateY(calc(var(--px) * 6deg));
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+
+  .pp-frame {
+    position: relative;
+    aspect-ratio: 1080 / 1350;
+    overflow: hidden;
+    border-radius: var(--radius-3xl);
+    border: 1px solid var(--color-border);
+    background: #0b0c0e;
+    container-type: inline-size;
+    box-shadow:
+      0 40px 80px -40px oklch(0 0 0 / 0.8),
+      0 0 0 1px oklch(1 0 0 / 0.02) inset;
+  }
+
+  .pp-photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.08)
+      translate3d(calc(var(--px) * -1.2%), calc(var(--py) * -1% + var(--sp) * 1.5%), 0);
+    will-change: transform;
+  }
+
+  /* Luz que segue o cursor e revela o rosto com mais volume */
+  .pp-light {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      circle at var(--lx) var(--ly),
+      oklch(0.85 0.04 240 / 0.28),
+      transparent 38%
+    );
+    mix-blend-mode: soft-light;
+    pointer-events: none;
+  }
+
+  /* Linha de leitura: um traço de luz fino que percorre a foto devagar */
+  .pp-scan {
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgb(160 179 196 / 0.55) 30%,
+      rgb(249 249 249 / 0.7) 50%,
+      rgb(160 179 196 / 0.55) 70%,
+      transparent
+    );
+    box-shadow: 0 0 18px 2px rgb(160 179 196 / 0.18);
+    pointer-events: none;
+    animation: pp-scan 9s cubic-bezier(0.6, 0, 0.4, 1) infinite;
+    opacity: 0;
+  }
+
+  .pp-scene[data-revealed] .pp-scan {
+    opacity: 1;
+  }
+
+  .pp-layer {
+    position: absolute;
+    font-family: var(--font-display);
+    transform: translate3d(
+      calc(var(--px) * var(--d, 1) * 2.4cqw),
+      calc(var(--py) * var(--d, 1) * 1.8cqw - var(--sp) * var(--d, 1) * 2cqw),
+      0
+    );
+    will-change: transform;
+  }
+
+  .pp-metal {
+    background: linear-gradient(172deg, #f4f6f8 0%, #b9c1cb 38%, #6f7a87 62%, #dfe4ea 100%);
+    background-size: 100% 160%;
+    background-position: 0 calc(50% + var(--py) * 40%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .pp-brand {
+    left: 9.6%;
+    top: 4.2%;
+    display: flex;
+    align-items: center;
+    gap: 0.6cqw;
+    line-height: 1;
+
+    & .pp-metal {
+      font-size: 11.6cqw;
+      font-weight: 400;
+      letter-spacing: -0.06em;
+    }
+
+    & .pp-copy {
+      font-size: 4.6cqw;
+      font-weight: 300;
+      color: #c7ced6;
+      margin-top: 1.4cqw;
+    }
+  }
+
+  .pp-name {
+    left: 55.6%;
+    top: 63.6%;
+    line-height: 0.9;
+    text-transform: uppercase;
+
+    & .pp-metal {
+      font-size: 6.1cqw;
+      font-weight: 400;
+      letter-spacing: -0.035em;
+    }
+
+    & .pp-role {
+      display: block;
+      margin-top: 2.6cqw;
+      font-size: 1.95cqw;
+      font-style: italic;
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      text-transform: none;
+      color: #8a929c;
+    }
+  }
+
+  .pp-item {
+    color: #fff;
+    cursor: default;
+    transition: opacity 600ms ease;
+
+    /* Área de toque maior que o texto */
+    &::before {
+      content: "";
+      position: absolute;
+      inset: -1.4cqw -2cqw;
+    }
+  }
+
+  .pp-item-float {
+    display: flex;
+    gap: 1.3cqw;
+    animation: pp-bob 6s ease-in-out infinite alternate;
+    animation-delay: calc(var(--i) * -1.6s);
+  }
+
+  .pp-num {
+    position: relative;
+    font-size: 2.2cqw;
+    font-weight: 700;
+    line-height: 1.05;
+    color: var(--color-primary);
+    transition: color 400ms ease;
+
+    /* Traço que cresce na frase em destaque */
+    &::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 125%;
+      width: 1px;
+      height: 0;
+      translate: -50% 0;
+      background: linear-gradient(to bottom, var(--color-primary), transparent);
+      transition: height 700ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+  }
+
+  .pp-text {
+    display: flex;
+    flex-direction: column;
+    white-space: nowrap;
+  }
+
+  .pp-head {
+    font-size: 2.2cqw;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+
+  .pp-sub {
+    font-size: 1.95cqw;
+    font-weight: 500;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    color: #d9dde2;
+  }
+
+  /* Revelação em sequência quando a foto entra na tela */
+  .pp-brand,
+  .pp-name,
+  .pp-item .pp-item-float {
+    opacity: 0;
+    filter: blur(6px);
+    clip-path: inset(0 100% 0 0);
+    transition:
+      opacity 900ms ease,
+      filter 900ms ease,
+      clip-path 1100ms cubic-bezier(0.7, 0, 0.2, 1);
+  }
+
+  .pp-brand {
+    transition-delay: 100ms;
+  }
+
+  .pp-name {
+    transition-delay: 350ms;
+  }
+
+  .pp-item .pp-item-float {
+    transition-delay: calc(700ms + var(--i) * 220ms);
+  }
+
+  .pp-scene[data-revealed] {
+    & .pp-brand,
+    & .pp-name,
+    & .pp-item .pp-item-float {
+      opacity: 1;
+      filter: blur(0);
+      clip-path: inset(-20% -20% -20% -20%);
+    }
+
+    & .pp-item {
+      opacity: 0.42;
+    }
+
+    & .pp-item[data-active] {
+      opacity: 1;
+
+      & .pp-num {
+        color: #fff;
+      }
+
+      & .pp-num::after {
+        height: 4.2cqw;
+      }
+
+      & .pp-head {
+        text-shadow: 0 0 2.4cqw oklch(0.755 0.06 245 / 0.65);
+      }
+    }
+  }
+
+  .pp-caption {
+    margin-top: 1.25rem;
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .pp-dot {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-input);
+    font-family: var(--font-display);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--color-muted-foreground);
+    transition:
+      background 300ms ease,
+      color 300ms ease,
+      border-color 300ms ease;
+
+    &[aria-pressed="true"] {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: var(--color-primary-foreground);
+    }
+  }
+
+  .pp-caption-text {
+    min-height: 3.4em;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-muted-foreground);
+    animation: rise-in 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes pp-scan {
+    0% {
+      top: 0%;
+      opacity: 0;
+    }
+    8%,
+    62% {
+      opacity: 0.6;
+    }
+    70%,
+    100% {
+      top: 100%;
+      opacity: 0;
+    }
+  }
+
+  @keyframes pp-bob {
+    from {
+      transform: translateY(-0.35cqw);
+    }
+    to {
+      transform: translateY(0.35cqw);
+    }
+  }
+} /* @layer components */

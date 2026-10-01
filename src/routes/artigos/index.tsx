@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
+import { IsotipoOutline } from "@/components/brand-graphics";
 import { formatArticleDate } from "@/lib/format";
 import { listArticles, type ArticleSummary } from "@/lib/wix";
+import { P } from "@/components/text";
 
 export const Route = createFileRoute("/artigos/")({
   loader: () => listArticles(),
@@ -29,19 +31,22 @@ function Artigos() {
 
   return (
     <>
-      <section className="grain relative overflow-hidden">
-        <div className="shell pt-20 pb-16 md:pt-28">
-          <p className="eyebrow rise">Artigos</p>
-          <h1 className="display-xl rise rise-delay-1 mt-6 max-w-3xl">
-            Ideias para transformar conhecimento em comportamento.
-          </h1>
+      <section className="grain relative isolate overflow-hidden">
+        <IsotipoOutline className="absolute top-[-35%] right-[-15%] -z-10 w-[min(900px,110vw)] opacity-80" />
+        <div className="shell pt-20 pb-20 md:pt-28">
+          <div>
+            <P className="eyebrow rise">Artigos</P>
+            <h1 className="display-xl rise rise-delay-1 mt-6 max-w-3xl">
+              Ideias para transformar conhecimento em <em>comportamento.</em>
+            </h1>
+          </div>
         </div>
       </section>
 
       <section className="hairline section">
         <div className="shell">
           {!featured ? (
-            <p className="lead">Nenhum artigo publicado ainda. Volte em breve.</p>
+            <P className="lead">Nenhum artigo publicado ainda. Volte em breve.</P>
           ) : (
             <>
               <FeaturedCard article={featured} />
@@ -62,10 +67,10 @@ function Artigos() {
 
 function Meta({ article }: { article: ArticleSummary }) {
   return (
-    <p className="text-xs tracking-wide text-muted-foreground uppercase">
+    <P className="meta">
       {formatArticleDate(article.publishedAt)}
       {article.minutesToRead > 0 && ` · ${article.minutesToRead} min de leitura`}
-    </p>
+    </P>
   );
 }
 
@@ -92,7 +97,7 @@ function FeaturedCard({ article }: { article: ArticleSummary }) {
         <h2 className="mt-5 text-3xl leading-tight transition-colors group-hover:text-primary md:text-4xl">
           {article.title}
         </h2>
-        <p className="lead mt-6 line-clamp-4">{article.excerpt}</p>
+        <P className="lead mt-6 line-clamp-4">{article.excerpt}</P>
         <span className="link-underline mt-8 inline-block">Ler artigo</span>
       </div>
     </Link>
@@ -118,9 +123,7 @@ function ArticleCard({ article }: { article: ArticleSummary }) {
       <h3 className="mt-4 text-xl leading-snug transition-colors group-hover:text-primary">
         {article.title}
       </h3>
-      <p className="mt-4 line-clamp-3 text-sm leading-relaxed text-muted-foreground">
-        {article.excerpt}
-      </p>
+      <P className="copy-sm mt-4 line-clamp-3">{article.excerpt}</P>
     </Link>
   );
 }

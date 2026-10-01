@@ -72,7 +72,11 @@ export function SiteHeader() {
                 {item.label}
               </Link>
             ))}
-            <Link to="/contato" className="btn-primary mt-3 justify-center" onClick={() => setOpen(false)}>
+            <Link
+              to="/contato"
+              className="btn-primary mt-3 justify-center"
+              onClick={() => setOpen(false)}
+            >
               Conversa diagnóstica
             </Link>
           </div>
@@ -84,12 +88,13 @@ export function SiteHeader() {
 
 export function SiteFooter() {
   return (
-    <footer className="hairline">
+    <footer className="hairline relative overflow-hidden">
       <div className="shell grid gap-12 py-16 md:grid-cols-[1.4fr_1fr_1fr]">
         <div>
           <img src={zumLogo} alt="Zum Educação Corporativa" className="h-9 w-auto" />
-          <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
-            Aprender não é acumular conhecimento. É gerar movimento.
+          <p className="mt-5 max-w-sm font-display text-lg leading-snug font-light tracking-tight text-foreground">
+            Aprender não é acumular conhecimento.{" "}
+            <em className="font-light whitespace-nowrap text-primary">É gerar movimento.</em>
           </p>
         </div>
 
@@ -110,7 +115,10 @@ export function SiteFooter() {
           <p className="eyebrow">Contato</p>
           <ul className="mt-5 space-y-3 text-sm text-muted-foreground">
             <li>
-              <a href="mailto:skillszum@gmail.com" className="transition-colors hover:text-foreground">
+              <a
+                href="mailto:skillszum@gmail.com"
+                className="transition-colors hover:text-foreground"
+              >
                 skillszum@gmail.com
               </a>
             </li>
@@ -128,9 +136,12 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="shell hairline py-6">
-        <p className="text-xs text-muted-foreground">
+        <p className="ui-text text-xs text-muted-foreground">
           © {new Date().getFullYear()} Zum Educação. Todos os direitos reservados.
         </p>
+      </div>
+      <div className="shell" aria-hidden="true">
+        <div className="footer-mark -mb-[0.2em] mt-2 select-none">ZUM©</div>
       </div>
     </footer>
   );

@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
-import servicesForm from "@/assets/services-form.jpg";
+import { IsotipoOutline, Trajectory } from "@/components/brand-graphics";
+import { ObjectPlate } from "@/components/zum-object";
+import { P } from "@/components/text";
 
 export const Route = createFileRoute("/solucoes")({
   head: () => ({
@@ -75,64 +77,79 @@ const processo = [
 function Solucoes() {
   return (
     <>
-      <section className="grain relative overflow-hidden">
-        <div className="shell grid items-end gap-12 pt-20 pb-16 md:grid-cols-[1.1fr_0.9fr] md:pt-28">
+      <section className="grain relative isolate overflow-hidden">
+        <div className="shell grid items-center gap-12 pt-20 pb-20 md:grid-cols-[1.15fr_0.85fr] md:pt-28 lg:gap-20">
           <div>
-            <p className="eyebrow rise">Soluções</p>
+            <P className="eyebrow rise">Soluções</P>
             <h1 className="display-xl rise rise-delay-1 mt-6">
-              Desenvolvimento não é um evento. É um movimento.
+              Desenvolvimento não é um evento. É um <em>movimento.</em>
             </h1>
-            <p className="lead rise rise-delay-2 mt-7 max-w-xl">
+            <P className="lead rise rise-delay-2 mt-7 max-w-xl">
               Cada solução é desenhada a partir da realidade de uma operação específica, com foco no
               comportamento que precisa mudar.
-            </p>
+            </P>
           </div>
-          <img
-            src={servicesForm}
-            alt="Arcos esculturais empilhados em equilíbrio"
-            loading="lazy"
-            width={1200}
-            height={912}
-            className="rise rise-delay-2 w-full rounded-3xl border border-border object-cover"
+          <ObjectPlate
+            name="sphere"
+            index="01"
+            label="Sistema"
+            note="Não é evento"
+            ratio="1 / 1"
+            size="56%"
+            priority
+            className="rise rise-delay-2"
           />
         </div>
       </section>
 
       <section className="section hairline">
         <div className="shell">
-          <p className="eyebrow">O que desenhamos</p>
-          <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {solucoes.map((item) => (
-              <article key={item.title} className="panel">
-                <h2 className="font-display text-xl">{item.title}</h2>
-                <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{item.text}</p>
+          <P className="eyebrow">O que desenhamos</P>
+          <h2 className="display-lg mt-5">
+            Soluções <em>sob medida</em>
+          </h2>
+          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {solucoes.map((item, i) => (
+              <article key={item.title} className="panel flex flex-col">
+                <span className="num">[{String(i + 1).padStart(2, "0")}]</span>
+                <h3 className="mt-8 text-xl font-medium tracking-tight">{item.title}</h3>
+                <P className="copy-sm mt-3">{item.text}</P>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="section hairline">
+      <section className="section-light section">
         <div className="shell">
           <div className="max-w-2xl">
-            <p className="eyebrow">Como trabalhamos</p>
-            <h2 className="display-lg mt-6">Antes, durante e depois da experiência</h2>
+            <P className="eyebrow">Como trabalhamos</P>
+            <h2 className="display-lg mt-6">
+              Antes, durante e <em>depois</em> da experiência
+            </h2>
           </div>
-          <div className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
+          <Trajectory steps={processo.length} className="mt-14 hidden lg:block" />
+          <div className="mt-6 grid gap-x-10 border-t border-border sm:grid-cols-2 lg:mt-4 lg:grid-cols-4 lg:border-t-0">
             {processo.map((item) => (
-              <article key={item.step} className="bg-background p-7 transition-colors hover:bg-secondary">
-                <span className="font-display text-xs text-primary">{item.step}</span>
-                <h3 className="mt-4 text-lg">{item.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{item.text}</p>
+              <article key={item.step} className="border-b border-border py-8 lg:border-b-0">
+                <span className="num text-3xl">[{item.step}]</span>
+                <h3 className="mt-5 text-xl font-medium tracking-tight">{item.title}</h3>
+                <P className="copy-sm mt-3">{item.text}</P>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="section hairline">
-        <div className="shell flex flex-col items-start gap-8 md:flex-row md:items-center md:justify-between">
-          <h2 className="display-lg max-w-xl">Vamos olhar juntos para o seu contexto?</h2>
+      <section className="section grain relative isolate overflow-hidden">
+        <IsotipoOutline className="absolute top-1/2 right-[-12%] -z-10 w-[min(760px,90vw)] -translate-y-1/2 opacity-70" />
+        <div className="shell flex flex-col items-start gap-8 md:flex-row md:items-end md:justify-between">
+          <div>
+            <P className="eyebrow">Próximo passo</P>
+            <h2 className="display-lg mt-6 max-w-xl">
+              Vamos olhar juntos para o seu <em>contexto?</em>
+            </h2>
+          </div>
           <Link to="/contato" className="btn-primary">
             Agendar uma conversa diagnóstica
           </Link>
