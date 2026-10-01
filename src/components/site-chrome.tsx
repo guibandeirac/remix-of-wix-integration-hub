@@ -4,8 +4,34 @@ import { useState } from "react";
 import zumIsotipo from "../assets/zum-isotipo.webp";
 import zumLogo from "../assets/zum-logo.webp";
 
+const social = [
+  {
+    href: "https://instagram.com/zumeducacao",
+    network: "Instagram",
+    handle: "@zumeducacao",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
+        <rect x="3.5" y="3.5" width="17" height="17" rx="5" />
+        <circle cx="12" cy="12" r="4" />
+        <circle cx="17.2" cy="6.8" r="1.05" fill="currentColor" stroke="none" />
+      </svg>
+    ),
+  },
+  {
+    href: "https://www.linkedin.com/company/zum-educa%C3%A7%C3%A3o",
+    network: "LinkedIn",
+    handle: "Zum Educação",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M6.9 9H3.6v11h3.3V9Zm-1.65-5.4a1.92 1.92 0 1 0 0 3.84 1.92 1.92 0 0 0 0-3.84ZM20.4 20h-3.3v-5.4c0-1.3-.03-2.96-1.8-2.96-1.81 0-2.09 1.41-2.09 2.87V20H9.9V9h3.16v1.5h.05c.44-.83 1.51-1.7 3.1-1.7 3.32 0 3.93 2.18 3.93 5.02V20Z" />
+      </svg>
+    ),
+  },
+] as const;
+
 const nav = [
   { to: "/", label: "Início" },
+  { to: "/para-quem-e", label: "Para quem é" },
   { to: "/solucoes", label: "Soluções" },
   { to: "/sobre", label: "Sobre" },
   { to: "/artigos", label: "Artigos" },
@@ -22,7 +48,7 @@ export function SiteHeader() {
           <img src={zumIsotipo} alt="Zum Educação Corporativa" className="h-10 w-auto" />
         </Link>
 
-        <nav className="hidden items-center gap-9 md:flex">
+        <nav className="hidden items-center gap-8 lg:flex">
           {nav.map((item) => (
             <Link
               key={item.to}
@@ -44,7 +70,7 @@ export function SiteHeader() {
           aria-label={open ? "Fechar menu" : "Abrir menu"}
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
-          className="flex h-11 w-11 items-center justify-center rounded-full border border-input md:hidden"
+          className="flex h-11 w-11 items-center justify-center rounded-full border border-input lg:hidden"
         >
           <span className="relative block h-3 w-5">
             <span
@@ -58,7 +84,7 @@ export function SiteHeader() {
       </div>
 
       {open && (
-        <nav className="border-t border-border bg-background md:hidden">
+        <nav className="border-t border-border bg-background lg:hidden">
           <div className="shell flex flex-col gap-1 py-4">
             {nav.map((item) => (
               <Link
@@ -96,6 +122,30 @@ export function SiteFooter() {
             Aprender não é acumular conhecimento.{" "}
             <em className="font-light whitespace-nowrap text-primary">É gerar movimento.</em>
           </p>
+
+          <div className="mt-9 flex flex-wrap gap-3">
+            {social.map((item) => (
+              <a
+                key={item.network}
+                href={item.href}
+                target="_blank"
+                rel="noreferrer"
+                className="social-link group"
+                aria-label={`${item.network} da Zum Educação (abre em nova aba)`}
+              >
+                <span className="social-badge">{item.icon}</span>
+                <span className="flex flex-col leading-tight">
+                  <span className="meta text-[0.62rem]">{item.network}</span>
+                  <span className="font-display text-sm font-medium text-foreground">
+                    {item.handle}
+                  </span>
+                </span>
+                <span className="social-arrow" aria-hidden="true">
+                  ↗
+                </span>
+              </a>
+            ))}
+          </div>
         </div>
 
         <div>

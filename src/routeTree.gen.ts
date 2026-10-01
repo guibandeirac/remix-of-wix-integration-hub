@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as ContatoRouteImport } from './routes/contato'
+import { Route as ParaQuemERouteImport } from './routes/para-quem-e'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as SolucoesRouteImport } from './routes/solucoes'
 import { Route as ArtigosIndexRouteImport } from './routes/artigos/index'
@@ -31,6 +32,11 @@ const BlogRoute = BlogRouteImport.update({
 const ContatoRoute = ContatoRouteImport.update({
   id: '/contato',
   path: '/contato',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ParaQuemERoute = ParaQuemERouteImport.update({
+  id: '/para-quem-e',
+  path: '/para-quem-e',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SobreRoute = SobreRouteImport.update({
@@ -63,6 +69,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/blog': typeof BlogRoute
   '/contato': typeof ContatoRoute
+  '/para-quem-e': typeof ParaQuemERoute
   '/sobre': typeof SobreRoute
   '/solucoes': typeof SolucoesRoute
   '/artigos/$slug': typeof ArtigosSlugRoute
@@ -73,6 +80,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/blog': typeof BlogRoute
   '/contato': typeof ContatoRoute
+  '/para-quem-e': typeof ParaQuemERoute
   '/sobre': typeof SobreRoute
   '/solucoes': typeof SolucoesRoute
   '/artigos/$slug': typeof ArtigosSlugRoute
@@ -84,6 +92,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/blog': typeof BlogRoute
   '/contato': typeof ContatoRoute
+  '/para-quem-e': typeof ParaQuemERoute
   '/sobre': typeof SobreRoute
   '/solucoes': typeof SolucoesRoute
   '/artigos/$slug': typeof ArtigosSlugRoute
@@ -96,6 +105,7 @@ export interface FileRouteTypes {
     | '/'
     | '/blog'
     | '/contato'
+    | '/para-quem-e'
     | '/sobre'
     | '/solucoes'
     | '/artigos/$slug'
@@ -106,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/blog'
     | '/contato'
+    | '/para-quem-e'
     | '/sobre'
     | '/solucoes'
     | '/artigos/$slug'
@@ -116,6 +127,7 @@ export interface FileRouteTypes {
     | '/'
     | '/blog'
     | '/contato'
+    | '/para-quem-e'
     | '/sobre'
     | '/solucoes'
     | '/artigos/$slug'
@@ -127,6 +139,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BlogRoute: typeof BlogRoute
   ContatoRoute: typeof ContatoRoute
+  ParaQuemERoute: typeof ParaQuemERoute
   SobreRoute: typeof SobreRoute
   SolucoesRoute: typeof SolucoesRoute
   ArtigosSlugRoute: typeof ArtigosSlugRoute
@@ -155,6 +168,13 @@ declare module '@tanstack/react-router' {
       path: '/contato'
       fullPath: '/contato'
       preLoaderRoute: typeof ContatoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/para-quem-e': {
+      id: '/para-quem-e'
+      path: '/para-quem-e'
+      fullPath: '/para-quem-e'
+      preLoaderRoute: typeof ParaQuemERouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sobre': {
@@ -199,6 +219,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BlogRoute: BlogRoute,
   ContatoRoute: ContatoRoute,
+  ParaQuemERoute: ParaQuemERoute,
   SobreRoute: SobreRoute,
   SolucoesRoute: SolucoesRoute,
   ArtigosSlugRoute: ArtigosSlugRoute,

@@ -116,14 +116,6 @@ function Home() {
               <IsotipoOutline grid nodes className="absolute inset-0 h-full w-full" />
               <ChromeIsotipo className="relative" />
             </div>
-            <figcaption className="meta mt-8 flex items-center justify-between gap-4 border-t border-border pt-4">
-              <span className="whitespace-nowrap">
-                <span className="text-foreground">Fig. 01</span>&nbsp;&nbsp;Isotipo
-              </span>
-              <span className="hidden whitespace-nowrap lg:inline">
-                Direção · Perspectiva · Transformação
-              </span>
-            </figcaption>
           </figure>
         </div>
 
