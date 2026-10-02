@@ -4,9 +4,12 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { IsotipoOutline } from "@/components/brand-graphics";
 import { P } from "@/components/text";
 import { ZumObject } from "@/components/zum-object";
-import type { ZumObjectName } from "@/lib/zum-objects";
+import { perfis, type Perfil } from "@/lib/perfis";
 
 export const Route = createFileRoute("/para-quem-e")({
+  // ?perfil=ceo abre direto o perfil escolhido (usado pelos atalhos da Home)
+  validateSearch: (search: Record<string, unknown>): { perfil?: string } =>
+    typeof search["perfil"] === "string" ? { perfil: search["perfil"] } : {},
   head: () => ({
     meta: [
       { title: "Para quem é — Zum Educação" },
@@ -24,92 +27,6 @@ export const Route = createFileRoute("/para-quem-e")({
   }),
   component: ParaQuemE,
 });
-
-type Perfil = {
-  role: string;
-  quote: string;
-  challenge: string;
-  how: string;
-  help: string[];
-  object: ZumObjectName;
-};
-
-const perfis: Perfil[] = [
-  {
-    role: "CEO",
-    quote: "Minha empresa cresceu. Agora precisamos fazer as pessoas crescerem junto.",
-    challenge:
-      "Você precisa conectar estratégia, cultura e comportamento sem transformar desenvolvimento em uma coleção de treinamentos.",
-    how: "A ZUM ajuda CEOs a transformar desafios de negócio em experiências de aprendizagem que desenvolvem líderes, fortalecem a cultura e preparam a organização para os próximos movimentos.",
-    help: [
-      "Jornadas de liderança",
-      "Universidades corporativas",
-      "Programas sob medida",
-      "Diagnóstico de aprendizagem",
-      "Team Building e Convenções",
-    ],
-    object: "arrow",
-  },
-  {
-    role: "Founders e Sócios",
-    quote: "Quero crescer sem perder a cultura — e sem depender de mim para tudo.",
-    challenge:
-      "À medida que a empresa cresce, decisões antes centralizadas precisam virar contexto, autonomia e comportamento compartilhado.",
-    how: "A ZUM ajuda founders a estruturar experiências que desenvolvem a liderança, aceleram a maturidade da equipe e transformam aquilo que antes estava “na cabeça dos fundadores” em cultura praticada pela organização.",
-    help: [
-      "Onboarding",
-      "Desenvolvimento de líderes",
-      "Programas sob medida",
-      "Comunidades de liderança",
-    ],
-    object: "stack",
-  },
-  {
-    role: "Gestores de Equipes",
-    quote: "Eu sei o que minha equipe precisa fazer. O desafio é fazer isso acontecer.",
-    challenge:
-      "Liderar exige muito mais do que conhecer ferramentas. Exige repertório, prática e contexto para transformar conhecimento em comportamento no dia a dia.",
-    how: "A ZUM cria experiências de desenvolvimento conectadas aos desafios reais da liderança — da comunicação à tomada de decisão, da gestão de conflitos à construção de times de alta performance.",
-    help: [
-      "Jornadas de liderança",
-      "Comunidades de liderança",
-      "Workshops",
-      "Programas sob medida",
-    ],
-    object: "spring",
-  },
-  {
-    role: "RH, People & Desenvolvimento",
-    quote:
-      "Temos iniciativas de desenvolvimento. Mas ainda falta conexão com a realidade do negócio.",
-    challenge:
-      "Você precisa construir experiências relevantes para as pessoas e, ao mesmo tempo, responder às prioridades da organização.",
-    how: "A ZUM atua como parceira estratégica para diagnosticar desafios, desenhar experiências de aprendizagem e transformar ações isoladas em jornadas que geram continuidade, prática e impacto.",
-    help: [
-      "Universidades corporativas",
-      "Diagnóstico de aprendizagem",
-      "Jornadas de liderança",
-      "Onboarding",
-      "Programas sob medida",
-    ],
-    object: "cross",
-  },
-  {
-    role: "Diretores e Heads",
-    quote:
-      "Preciso mudar um comportamento da minha área, não simplesmente contratar um treinamento.",
-    challenge:
-      "Novos processos, crescimento, reestruturações e mudanças estratégicas exigem que as pessoas façam coisas diferentes.",
-    how: "A ZUM traduz desafios específicos da operação em experiências de aprendizagem desenhadas para gerar mudança concreta de comportamento.",
-    help: [
-      "Programas sob medida",
-      "Workshops",
-      "Diagnóstico de aprendizagem",
-      "Jornadas de liderança",
-    ],
-    object: "hourglass",
-  },
-];
 
 const pad = (i: number) => String(i + 1).padStart(2, "0");
 
@@ -130,7 +47,7 @@ function ParaQuemE() {
         </div>
       </section>
 
-      <section className="section hairline">
+      <section id="perfis" className="section hairline scroll-mt-20">
         <div className="shell">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <h2 className="display-lg">
@@ -171,8 +88,13 @@ function ParaQuemE() {
 
 /** Lista de perfis: abas com painel no desktop, acordeão no celular. */
 function PerfilSelector() {
-  const [active, setActive] = useState(0);
-  const [openMobile, setOpenMobile] = useState<number | null>(0);
+  const { perfil } = Route.useSearch();
+  const initial = Math.max(
+    0,
+    perfis.findIndex((p) => p.slug === perfil),
+  );
+  const [active, setActive] = useState(initial);
+  const [openMobile, setOpenMobile] = useState<number | null>(initial);
   const id = useId();
   const current = perfis[active] ?? perfis[0]!;
 

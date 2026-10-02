@@ -120,7 +120,7 @@ function Solucoes() {
         </div>
       </section>
 
-      <section className="section-light section">
+      <section id="como-trabalhamos" className="section-light section scroll-mt-20">
         <div className="shell">
           <div className="max-w-2xl">
             <P className="eyebrow">Como trabalhamos</P>
