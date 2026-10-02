@@ -1695,8 +1695,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: 50% 30%;
-      transform: scale(1.06) translate3d(var(--tx), var(--ty), 0);
+      transform: scale(1.03) translate3d(var(--tx), var(--ty), 0);
       will-change: transform;
     }
 
@@ -1712,43 +1711,6 @@
       );
       mix-blend-mode: soft-light;
       pointer-events: none;
-    }
-
-    &::after {
-      content: "";
-      position: absolute;
-      inset: 55% 0 0;
-      z-index: 1;
-      background: linear-gradient(to bottom, transparent, rgb(11 12 14 / 0.85));
-      pointer-events: none;
-    }
-  }
-
-  .founder-name {
-    position: absolute;
-    left: 8%;
-    bottom: 7%;
-    z-index: 2;
-    font-family: var(--font-display);
-    text-transform: uppercase;
-    line-height: 0.92;
-
-    & .pp-metal {
-      display: block;
-      font-size: 9cqw;
-      font-weight: 400;
-      letter-spacing: -0.035em;
-    }
-
-    & small {
-      display: block;
-      margin-top: 2.6cqw;
-      font-size: 3.4cqw;
-      font-style: italic;
-      font-weight: 300;
-      letter-spacing: 0.04em;
-      text-transform: none;
-      color: #a9aeb3;
     }
   }
 
