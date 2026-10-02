@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { notFound } from "@tanstack/react-router";
 import { ApiKeyStrategy, createClient, media, OAuthStrategy } from "@wix/sdk";
-import { posts } from "@wix/blog";
+import { categories, posts } from "@wix/blog";
 
 import { contacts, labels, notes } from "@wix/crm";
 import { z } from "zod";
@@ -23,7 +23,7 @@ let visitorClient: ReturnType<typeof createVisitorClient> | undefined;
 
 function createVisitorClient() {
   return createClient({
-    modules: { posts },
+    modules: { posts, categories },
     auth: OAuthStrategy({ clientId: requireEnv("WIX_CLIENT_ID") }),
   });
 }
@@ -57,6 +57,13 @@ export const checkWixConnection = createServerFn({ method: "GET" }).handler(asyn
 
 // ---------- Blog ----------
 
+export type ArticleCategory = {
+  /** Usado no endereço: /artigos?tema=lideranca */
+  slug: string;
+  label: string;
+  description: string;
+};
+
 export type ArticleSummary = {
   id: string;
   slug: string;
@@ -65,11 +72,49 @@ export type ArticleSummary = {
   publishedAt: string | null;
   minutesToRead: number;
   coverUrl: string | null;
+  category: ArticleCategory | null;
+  /** Marcado como destaque no Wix: compõe o "Comece por aqui". */
+  featured: boolean;
 };
 
 export type Article = ArticleSummary & {
   content: RichNode[];
+  /** Outros artigos do mesmo tema. */
+  related: ArticleSummary[];
 };
+
+const slugify = (label: string) =>
+  label
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+
+// Categorias mudam raramente: ficam em memória por alguns minutos.
+let categoryCache: { at: number; map: Map<string, ArticleCategory> } | undefined;
+
+async function getCategoryMap() {
+  if (categoryCache && Date.now() - categoryCache.at < 5 * 60_000) return categoryCache.map;
+  const map = new Map<string, ArticleCategory>();
+  try {
+    const { categories: items = [] } = await getVisitorClient().categories.listCategories({
+      paging: { limit: 100 },
+    });
+    for (const cat of items) {
+      if (!cat._id || !cat.label) continue;
+      map.set(cat._id, {
+        slug: slugify(cat.label),
+        label: cat.label,
+        description: cat.description ?? "",
+      });
+    }
+    categoryCache = { at: Date.now(), map };
+  } catch {
+    // Sem categorias, os artigos continuam aparecendo normalmente.
+  }
+  return map;
+}
 
 async function fetchPostBySlug(slug: string) {
   return getVisitorClient().posts.getPostBySlug(slug);
@@ -83,7 +128,8 @@ function coverUrl(post: WixPost, width: number, height: number) {
   return media.getScaledToFillImageUrl(image, width, height, {});
 }
 
-function toSummary(post: WixPost): ArticleSummary {
+function toSummary(post: WixPost, cats: Map<string, ArticleCategory>): ArticleSummary {
+  const categoryId = post.categoryIds?.find((id) => cats.has(id));
   return {
     id: post._id ?? post.slug ?? "",
     slug: post.slug ?? "",
@@ -92,18 +138,24 @@ function toSummary(post: WixPost): ArticleSummary {
     publishedAt: post.firstPublishedDate ? new Date(post.firstPublishedDate).toISOString() : null,
     minutesToRead: post.minutesToRead ?? 0,
     coverUrl: coverUrl(post, 1200, 800),
+    category: categoryId ? (cats.get(categoryId) ?? null) : null,
+    featured: Boolean(post.featured),
   };
+}
+
+async function fetchSummaries(): Promise<ArticleSummary[]> {
+  const [{ posts: items }, cats] = await Promise.all([
+    getVisitorClient().posts.listPosts({ paging: { limit: 100 }, sort: "PUBLISHED_DATE_DESC" }),
+    getCategoryMap(),
+  ]);
+  return (items ?? []).map((post) => toSummary(post, cats));
 }
 
 export const listArticles = createServerFn({ method: "GET" }).handler(
   async (): Promise<ArticleSummary[]> => {
     if (!isWixConfigured()) return [];
     try {
-      const { posts: items } = await getVisitorClient().posts.listPosts({
-        paging: { limit: 100 },
-        sort: "PUBLISHED_DATE_DESC",
-      });
-      return (items ?? []).map(toSummary);
+      return await fetchSummaries();
     } catch {
       return [];
     }
@@ -126,10 +178,22 @@ export const getArticle = createServerFn({ method: "GET" })
     }
     if (!post) throw notFound();
 
+    const summary = toSummary(post, await getCategoryMap());
+    let related: ArticleSummary[] = [];
+    try {
+      const all = (await fetchSummaries()).filter((a) => a.id !== summary.id);
+      const sameTheme = all.filter((a) => a.category?.slug === summary.category?.slug);
+      // Completa com os mais recentes quando o tema tem poucos artigos.
+      related = [...sameTheme, ...all.filter((a) => !sameTheme.includes(a))].slice(0, 3);
+    } catch {
+      // As leituras relacionadas são opcionais.
+    }
+
     return {
-      ...toSummary(post),
+      ...summary,
       coverUrl: coverUrl(post, 1600, 900),
       content: (post.richContent?.nodes ?? []) as RichNode[],
+      related,
     };
   });
 

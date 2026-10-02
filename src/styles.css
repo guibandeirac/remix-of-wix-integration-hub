@@ -1791,3 +1791,70 @@
     background-position: -100% 0;
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* Artigos: filtros de tema e cartões                                 */
+/* ------------------------------------------------------------------ */
+
+@layer components {
+  .theme-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--color-muted-foreground);
+    transition:
+      color 250ms ease,
+      border-color 250ms ease,
+      background 250ms ease;
+
+    & span {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--color-primary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    &:hover {
+      color: var(--color-foreground);
+      border-color: rgb(160 179 196 / 0.5);
+    }
+
+    &[aria-current="page"] {
+      color: var(--color-primary-foreground);
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+
+      & span {
+        color: var(--color-primary-foreground);
+        opacity: 0.75;
+      }
+    }
+
+    &:focus-visible {
+      outline: 1px solid var(--steel);
+      outline-offset: 3px;
+    }
+  }
+
+  /* Cartão editorial: sem caixa, a capa e o texto respiram */
+  .article-card {
+    position: relative;
+
+    &:focus-visible {
+      outline: 1px solid var(--steel);
+      outline-offset: 6px;
+      border-radius: var(--radius-2xl);
+    }
+  }
+
+  /* Leituras relacionadas, no fim de cada artigo */
+  .related-row .article-thumb {
+    width: 7rem;
+  }
+}

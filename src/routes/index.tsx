@@ -386,9 +386,12 @@ function ArticlesSection({ articles }: { articles?: ArticleSummary[] }) {
                     >
                       <span className="num text-lg">[{pad(i)}]</span>
                       <span className="flex min-w-0 flex-col gap-2">
-                        <span className="meta">
-                          {formatArticleDate(article.publishedAt)}
-                          {article.minutesToRead > 0 && ` · ${article.minutesToRead} min`}
+                        <span className="meta flex flex-wrap gap-x-3 gap-y-1">
+                          {article.category && (
+                            <span className="text-primary">{article.category.label}</span>
+                          )}
+                          <span>{formatArticleDate(article.publishedAt)}</span>
+                          {article.minutesToRead > 0 && <span>{article.minutesToRead} min</span>}
                         </span>
                         <h3 className="index-title leading-snug">{article.title}</h3>
                         {article.excerpt && (
