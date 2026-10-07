@@ -337,10 +337,10 @@ function Home() {
                 Agendar uma conversa diagnóstica
               </Link>
               <a
-                href="mailto:skillszum@gmail.com"
+                href="mailto:contato@zumeducacao.com.br"
                 className="link-underline text-muted-foreground hover:text-foreground"
               >
-                ou escreva para skillszum@gmail.com
+                ou escreva para contato@zumeducacao.com.br
               </a>
             </div>
           </div>

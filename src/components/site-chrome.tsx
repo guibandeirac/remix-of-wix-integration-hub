@@ -166,10 +166,10 @@ export function SiteFooter() {
           <ul className="mt-5 space-y-3 text-sm text-muted-foreground">
             <li>
               <a
-                href="mailto:skillszum@gmail.com"
+                href="mailto:contato@zumeducacao.com.br"
                 className="transition-colors hover:text-foreground"
               >
-                skillszum@gmail.com
+                contato@zumeducacao.com.br
               </a>
             </li>
             <li>

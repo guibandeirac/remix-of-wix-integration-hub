@@ -86,8 +86,8 @@ function Contato() {
           <div className="mt-10 space-y-3 text-sm text-muted-foreground">
             <P className="ui-text">
               Prefere e-mail direto?{" "}
-              <a href="mailto:skillszum@gmail.com" className="text-foreground underline">
-                skillszum@gmail.com
+              <a href="mailto:contato@zumeducacao.com.br" className="text-foreground underline">
+                contato@zumeducacao.com.br
               </a>
             </P>
           </div>
@@ -150,8 +150,8 @@ function Contato() {
           {status === "error" ? (
             <P role="alert" className="ui-text text-sm text-destructive">
               Não conseguimos enviar agora. Tente novamente ou escreva para{" "}
-              <a href="mailto:skillszum@gmail.com" className="underline">
-                skillszum@gmail.com
+              <a href="mailto:contato@zumeducacao.com.br" className="underline">
+                contato@zumeducacao.com.br
               </a>
               .
             </P>
